@@ -1,3 +1,5 @@
+import random
+
 board = {'a1': ' ', 'b1': ' ', 'c1': ' ',
          'a2': ' ', 'b2': ' ', 'c2': ' ',
          'a3': ' ', 'b3': ' ', 'c3': ' '}
@@ -78,15 +80,10 @@ def human_player(board, turn):
     return board
 
 def cpu_easy(board, turn):
-    for move in moves:
+    for move in random.sample(moves, len(moves)):
         if legalMove(move):
             board[move] = turn
             return board
-        else:
-            for move in reversed(moves):
-                if legalMove(move):
-                    board[move] = turn
-                    return board
 
 player1 = human_player
 
