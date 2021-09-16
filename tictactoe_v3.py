@@ -93,7 +93,7 @@ def play_again(player1, player2):
         exit()
     else:
         print('Y or N, please.')
-        play_again()
+        play_again(player1, player2)
 
 def is_game_over():
     if board['a1'] == board['a2'] == board['a3'] != ' ':  # a column
