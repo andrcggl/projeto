@@ -4,6 +4,15 @@ board = {'a1': ' ', 'b1': ' ', 'c1': ' ',
          'a2': ' ', 'b2': ' ', 'c2': ' ',
          'a3': ' ', 'b3': ' ', 'c3': ' '}
 
+lines = [['a1', 'b1', 'c1'],    # 1 row
+         ['a2', 'b2', 'c2'],    # 2 row
+         ['a3', 'b3', 'c3'],    # 3 row
+         ['a1', 'a2', 'a3'],    # a column
+         ['b1', 'b2', 'b3'],    # b column
+         ['c1', 'c2', 'c3'],    # c column
+         ['a1', 'b2', 'c3'],    # diagonal
+         ['a3', 'b2', 'c1']]    # diagonal
+
 score = {}
 
 match_count = 1
@@ -96,22 +105,9 @@ def play_again(player1, player2):
         play_again(player1, player2)
 
 def is_game_over():
-    if board['a1'] == board['a2'] == board['a3'] != ' ':  # a column
-        return True
-    elif board['b1'] == board['b2'] == board['b3'] != ' ':  # b column
-        return True
-    elif board['c1'] == board['c2'] == board['c3'] != ' ':  # c column 
-        return True
-    elif board['a1'] == board['b1'] == board['c1'] != ' ':  # 1 row
-        return True
-    elif board['a2'] == board['b2'] == board['c2'] != ' ':  # 2 row
-        return True
-    elif board['a3'] == board['b3'] == board['c3'] != ' ':  # 3 row
-        return True
-    elif board['a1'] == board['b2'] == board['c3'] != ' ':  # diagonal
-        return True
-    elif board['a3'] == board['b2'] == board['c1'] != ' ':  # diagonal
-        return True
+    for line in lines:
+        if board[line[0]] == board[line[1]] == board[line[2]] != ' ':
+            return True
 
 ########### PLAYERS #############
 def human_player(turn):
