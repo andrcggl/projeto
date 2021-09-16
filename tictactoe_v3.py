@@ -85,7 +85,7 @@ def play_again(player1, player2):
     print('\nWould you like to play again?')
     answer = input('Y or N: ')
     if answer == 'y' or answer == 'Y':
-        for i in board.keys():
+        for i in board:
             board[i] = ' '
         tictac(player1, player2)
     elif answer == 'n' or answer == 'N':
