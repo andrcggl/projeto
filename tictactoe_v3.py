@@ -19,14 +19,16 @@ match_count = 1
 
 def main():
     print('\n**Welcome to Python Tic-Tac-Toe!**\n')
-    print('Play against:\n1. CPU\n2. Human')
-    choice = input('Choose (1 or 2):')
+    print('Play against:\n1. CPU easy\n2. CPU hard\n3. Human')
+    choice = input('Choose (1, 2 or 3):')
     if choice == '1':
         tictac(human_player, cpu_easy)
     elif choice == '2':
+        tictac(human_player, cpu_hard)
+    elif choice == '3':
         tictac(human_player, human_player)
     else:
-        print('1 or 2, please.')
+        print('1, 2 or 3 please.')
         main()
 
 def tictac(player1, player2):  # player1 and 2 are functions
@@ -109,6 +111,26 @@ def is_game_over():
         if board[line[0]] == board[line[1]] == board[line[2]] != ' ':
             return True
 
+def possible_win():
+    win_lines = [[], []]        # [[x poss wins], [o poss wins]]
+    for line in lines:
+        line_value = 1
+        empty_square = ' '
+        for key in line:
+            if board[key] == ' ':
+                line_value *= 2
+                empty_square = key
+            elif board[key] == 'X':
+                line_value *= 3
+            elif board[key] == 'O':
+                line_value *= 5
+        if line_value == 18:
+            win_lines[0].append(empty_square)
+        elif line_value == 50:
+            win_lines[1].append(empty_square)
+    return win_lines
+
+
 ########### PLAYERS #############
 def human_player(turn):
     move = input('\nYour move: ')
@@ -123,8 +145,43 @@ def cpu_easy(turn):
         if legalMove(move):
             board[move] = turn
             break
+
+def cpu_hard(turn):
+    move = 'b2'
+    if turn == 'X': 
+        if possible_win()[0]:
+            move = possible_win()[0][0]
+            board[move] = turn
+        elif possible_win()[1]:
+            move = possible_win()[1][0]
+            board[move] = turn
+        elif legalMove(move):
+            board[move] = turn
+        else:
+            for move in random.sample(board.keys(), len(board)):
+                if legalMove(move):
+                    board[move] = turn
+                    break
+    else:
+        if possible_win()[1]:
+            move = possible_win()[1][0]
+            board[move] = turn
+        elif possible_win()[0]:
+            move = possible_win()[0][0]
+            board[move] = turn
+        elif legalMove(move):
+            board[move] = turn
+        else:
+            for move in random.sample(board.keys(), len(board)):
+                if legalMove(move):
+                    board[move] = turn
+                    break
+    
+
+#def cpu_perfect():
+
 ##################################
 
-#tictac(cpu_easy, cpu_easy)
+#tictac(cpu_easy, cpu_hard)
 
 main()
