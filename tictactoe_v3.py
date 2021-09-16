@@ -4,6 +4,10 @@ board = {'a1': ' ', 'b1': ' ', 'c1': ' ',
          'a2': ' ', 'b2': ' ', 'c2': ' ',
          'a3': ' ', 'b3': ' ', 'c3': ' '}
 
+score = {}
+
+match_count = 1
+
 def main():
     print('\n**Welcome to Python Tic-Tac-Toe!**\n')
     print('Play against:\n1. CPU\n2. Human')
@@ -17,6 +21,7 @@ def main():
         main()
 
 def tictac(player1, player2):  # player1 and 2 are functions
+    global match_count
     print('\nGame start\n')
     print_board()
     i = 1
@@ -26,10 +31,13 @@ def tictac(player1, player2):  # player1 and 2 are functions
         print('\n'+ turn + '\'s turn.')
         current_player(turn)
         print_board()
-        if is_game_over(turn):
-            print('\nGame Over.\n')
-            print('*** ' + turn + ' won! ***')
-            play_again(player1, player2)
+        if i >= 5:
+            if is_game_over():
+                score[match_count] = turn
+                match_count += 1
+                print('\nGame Over.\n')
+                print('*** ' + turn + ' won! ***')
+                play_again(player1, player2)
         if turn == 'X':
             turn = 'O'
         else:
@@ -39,6 +47,8 @@ def tictac(player1, player2):  # player1 and 2 are functions
         else:
             current_player = player1
         i += 1
+    score[match_count] = 'tie'
+    match_count += 1
     print('\nGame Over.\nIt is a tie.')
     play_again(player1, player2)
 
@@ -51,11 +61,25 @@ def print_board():
     print('3 ' + board['a3'] + '|' + board['b3'] + '|' + board['c3'])
 
 def legalMove(move):
-    if move in board.keys():
+    if move in board:
         if board[move] == ' ':
             return True
     else:
         return False
+
+def print_score():
+    x_final_score = len([k for k,v in score.items() if v == 'X'])
+    o_final_score = len([k for k,v in score.items() if v == 'O'])
+    print('\n***FINAL SCORE***\n')
+    print('#       X   O\n')
+    for i in score:
+        if score[i] == 'X':
+            print(str(i) + '.      @   -')
+        elif score[i] == 'O':
+            print(str(i) + '.      -   @')
+        else:
+            print(str(i) + '.      -   -')
+    print('\ntotal   ' + str(x_final_score) + '   ' + str(o_final_score))
 
 def play_again(player1, player2):
     print('\nWould you like to play again?')
@@ -65,12 +89,13 @@ def play_again(player1, player2):
             board[i] = ' '
         tictac(player1, player2)
     elif answer == 'n' or answer == 'N':
+        print_score()
         exit()
     else:
         print('Y or N, please.')
         play_again()
 
-def is_game_over(turn):
+def is_game_over():
     if board['a1'] == board['a2'] == board['a3'] != ' ':  # a column
         return True
     elif board['b1'] == board['b2'] == board['b3'] != ' ':  # b column
@@ -88,6 +113,7 @@ def is_game_over(turn):
     elif board['a3'] == board['b2'] == board['c1'] != ' ':  # diagonal
         return True
 
+########### PLAYERS #############
 def human_player(turn):
     move = input('\nYour move: ')
     if legalMove(move):
@@ -95,15 +121,14 @@ def human_player(turn):
     else:
         print('\nIlegal move. Play again.')
         human_player(turn)
-    return board
 
 def cpu_easy(turn):
-    for move in random.sample(board.keys(), len(board.keys())):
+    for move in random.sample(board.keys(), len(board)):
         if legalMove(move):
             board[move] = turn
-            return board
+            break
+##################################
 
-
-#tictac(cpu_easy, cpu_easy, turn)
+#tictac(cpu_easy, cpu_easy)
 
 main()
