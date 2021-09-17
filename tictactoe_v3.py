@@ -38,7 +38,7 @@ def tictac(player1, player2):  # player1 and 2 are functions
     i = 1
     current_player = player1
     turn = 'X'
-    while i <= len(board.keys()):
+    while i <= len(board):
         print('\n'+ turn + '\'s turn.')
         current_player(turn)
         print_board()
@@ -84,12 +84,20 @@ def print_score():
     print('\n***FINAL SCORE***\n')
     print('#       X   O\n')
     for i in score:
-        if score[i] == 'X':
-            print(str(i) + '.      @   -')
-        elif score[i] == 'O':
-            print(str(i) + '.      -   @')
+        if i < 10:
+            if score[i] == 'X':
+                print(str(i) + '.      @   -')
+            elif score[i] == 'O':
+                print(str(i) + '.      -   @')
+            else:
+                print(str(i) + '.      -   -')
         else:
-            print(str(i) + '.      -   -')
+            if score[i] == 'X':
+                print(str(i) + '.     @   -')
+            elif score[i] == 'O':
+                print(str(i) + '.     -   @')
+            else:
+                print(str(i) + '.     -   -')
     print('\ntotal   ' + str(x_final_score) + '   ' + str(o_final_score))
 
 def play_again(player1, player2):
@@ -124,10 +132,10 @@ def possible_win():
                 line_value *= 3
             elif board[key] == 'O':
                 line_value *= 5
-        if line_value == 18:
-            win_lines[0].append(empty_square)
-        elif line_value == 50:
-            win_lines[1].append(empty_square)
+        if line_value == 18:                       # i.e. two X's and one empty square
+            win_lines[0].append(empty_square)      # 3 x 3 x 2 = 18 
+        elif line_value == 50:                   # two O's and one empty
+            win_lines[1].append(empty_square)    # 5 x 5 x 2 = 50
     return win_lines
 
 
