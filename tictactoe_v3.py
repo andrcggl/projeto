@@ -137,7 +137,7 @@ def human_player(turn):
     if legalMove(move):
         board[move] = turn
     else:
-        print('\nIlegal move. Play again.')
+        print('\nIlegal move. Try again.')
         human_player(turn)
 
 def cpu_easy(turn):
