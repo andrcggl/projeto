@@ -1,9 +1,3 @@
-##########################
-### m,n,k-game PROJECT ###
-##########################
-### By andrcggl   2021 ###
-##########################
-
 import random
 
 m, n, k = 0, 0, 0
@@ -15,23 +9,9 @@ while not n in range(3,27):
 while not k in range(3, max(m, n)+1):
     k = int(input('choose value for k (3 <= k <= max(m, n): '))
 
-#board = []
-#for i in range(0, n):
-#    board.append([])
-#    for j in range(1, m+1):
-#        board[i].append(j + i*m)
-
 board = [['  ' #j + i*m
         for j in range(1, m+1)]     # m is the board's width
         for i in range(n)]          # n is the board's height
-
-#def columns(board):
-#    columns = []
-#    for i in range(m):
-#        columns.append([])
-#        for j in range(n):
-#            columns[i].append(board[j][i])
-#    return columns
 
 def columns(board):
     return [[board[j][i]
@@ -47,12 +27,6 @@ def antidiagonals(board):
     return [[board[p - q][q]
              for q in range(max(p-n+1,0), min(p+1, m))]
             for p in range(n + m - 1)]
-
-#lines = [x for x in 
-#       (board + columns(board) 
-#               + diagonals(board)
-#               + antidiagonals(board))
-#        if len(x) >= k]
 
 def lines(board):
     return [x for x in 
@@ -81,7 +55,10 @@ def print_board():
     print(top_border)
 
 def move_is_legal(move):
-    line = int(move[1]) - 1
+    if len(move) == 2 and move[0].isalpha() and move[1].isdigit():
+            line = int(move[1]) - 1
+    elif len(move) == 3 and move[0].isalpha() and move[1:3].isdigit():
+            line = int(move[1:3]) -1
     column = ord(move[0]) - 97
     if column in range(m) and line in range(n):
         if board[line][column] == '  ':
@@ -127,9 +104,16 @@ def is_game_over():
             else:
                 count = 1
 
+########### PLAYERS #############
 def human_player(turn):
     move = input('\nYour move: ')
-    line = int(move[1]) - 1
+    if len(move) == 2 and move[0].isalpha() and move[1].isdigit():
+            line = int(move[1]) - 1
+    elif len(move) == 3 and move[0].isalpha() and move[1:3].isdigit():
+            line = int(move[1:3]) -1
+    else:
+        print('\nIlegal move. Try again.')
+        human_player(turn)
     column = ord(move[0]) - 97
     if move_is_legal(move):
         board[line][column] = turn
@@ -142,9 +126,9 @@ def cpu_random(turn):
     while a:
         i = random.randint(0, n-1)
         j = random.randint(0, m-1)
-        if board[i][j] == ' ':
+        if board[i][j] == '  ':
             board[i][j] = turn
             a = False
+#################################
 
-
-game(human_player, human_player)
+game(human_player, cpu_random)
