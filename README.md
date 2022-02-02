@@ -1,4 +1,4 @@
-# projeto
+# tic-tac-toe-py
 by andrcggl and orlandoqueb
 
 Project for studying and testing Python and Git
